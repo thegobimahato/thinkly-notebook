@@ -1,7 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const { isAuthenticated } = getKindeServerSession();
+
+  if (await isAuthenticated()) {
+    return redirect("/dashboard");
+  }
+
   return (
     <section className="background-gradient flex h-screen items-center justify-center">
       <div className="relative mx-auto w-full max-w-7xl items-center px-5 py-12 md:px-12 lg:px-16">
@@ -13,7 +21,7 @@ export default function Home() {
               </span>
             </span>
 
-            <h1 className="mt-8 text-3xl font-extrabold tracking-tight lg:text-6xl">
+            <h1 className="mt-8 text-3xl font-extrabold tracking-tight md:text-4xl lg:text-6xl">
               Create Notes with ease
             </h1>
 
@@ -25,7 +33,7 @@ export default function Home() {
 
           <div className="mx-auto mt-10 flex max-w-sm justify-center">
             <RegisterLink>
-              <Button size={"lg"} className="w-full">
+              <Button size={"lg"} className="text-md w-full">
                 Sign up for free
               </Button>
             </RegisterLink>
