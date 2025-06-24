@@ -7,8 +7,8 @@ import {
   RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Image from "next/image";
 import UserNav from "./UserNav";
+import Logo from "./Logo";
 
 export default async function Navbar() {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -19,13 +19,9 @@ export default async function Navbar() {
       <div className="container mx-auto flex max-w-7xl items-center justify-between">
         <Link href={"/"}>
           <div className="flex items-center justify-center gap-2">
-            <Image
-              src={"./logo.svg"}
-              width={40}
-              height={40}
-              alt="logo"
-              className="h-[35px] w-[35px] md:h-[40px] md:w-[40px]"
-            />{" "}
+            <span className="logo-theme text-primary flex h-[30px] w-[30px] items-center justify-center md:h-[40px] md:w-[40px]">
+              <Logo />
+            </span>
             <h1 className="text-2xl font-bold italic md:text-3xl">Thinkly</h1>
           </div>
         </Link>

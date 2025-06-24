@@ -5,6 +5,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import ToasterTheme from "@/components/ui/toaster-theme";
 import Navbar from "@/components/general/Navbar";
+import { prisma } from "@/lib/db";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { unstable_noStore as noStore } from "next/cache";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,15 +25,33 @@ export const metadata: Metadata = {
     "Effortlessly capture thoughts, organize notes, and unlock your creative potential with Thinkly.",
 };
 
-export default function RootLayout({
+async function getColorScheme(userId: string) {
+  noStore();
+  if (userId) {
+    const data = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        colorScheme: true,
+      },
+    });
+    return data;
+  }
+}
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const data = await getColorScheme(user?.id as string);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${data?.colorScheme ?? "theme-orange"} antialiased`}
       >
         <ThemeProvider
           attribute="class"

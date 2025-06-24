@@ -9,13 +9,11 @@ async function getData({
   id,
   firstName,
   lastName,
-  profileImage,
 }: {
   email: string;
   id: string;
   firstName: string | undefined | null;
   lastName: string | undefined | null;
-  profileImage: string | undefined | null;
 }) {
   const user = await prisma.user.findUnique({
     where: {
@@ -52,7 +50,6 @@ export default async function DashboardLayout({
     firstName: user?.given_name as string,
     id: user?.id as string,
     lastName: user?.family_name as string,
-    profileImage: user?.picture,
   });
 
   if (!user) {
