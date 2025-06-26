@@ -16,13 +16,13 @@ export default async function Navbar() {
 
   return (
     <nav className="dark:border-accent flex h-[10vh] items-center border-b border-black/20 bg-transparent px-2">
-      <div className="container mx-auto flex max-w-7xl items-center justify-between">
+      <div className="container flex items-center justify-between px-2 md:px-4 lg:px-8">
         <Link href={"/"}>
           <div className="flex items-center justify-center gap-2">
             <span className="logo-theme text-primary flex h-[30px] w-[30px] items-center justify-center md:h-[40px] md:w-[40px]">
               <Logo />
             </span>
-            <h1 className="text-2xl font-bold italic md:text-3xl">Thinkly</h1>
+            <h1 className="text-2xl font-bold md:text-3xl">Thinkly</h1>
           </div>
         </Link>
 

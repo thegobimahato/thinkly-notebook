@@ -3,7 +3,7 @@ import { createCustomerPortal } from "@/app/actions/billings/customer-portal";
 import {
   StripePortalButton,
   StripeSubscriptionCreationButton,
-} from "@/components/general/SubmitButton";
+} from "@/components/general/SubmitButtons";
 import {
   Card,
   CardContent,

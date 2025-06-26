@@ -75,7 +75,7 @@ export default async function DashboardLayout({
   return (
     <div className="mt-10 flex flex-col space-y-6 px-2 md:px-4 lg:px-8">
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
+        <aside className="hidden h-full w-[200px] flex-col md:flex">
           <DashboardNav />
         </aside>
 

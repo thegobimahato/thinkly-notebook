@@ -1,5 +1,5 @@
 import { updateUserProfile } from "@/app/actions/user/update-profile";
-import SubmitButton from "@/components/general/SubmitButton";
+import SubmitButton from "@/components/general/SubmitButtons";
 import {
   Card,
   CardContent,
