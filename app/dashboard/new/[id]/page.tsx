@@ -33,10 +33,10 @@ async function getData({ userId, noteId }: { userId: string; noteId: string }) {
 }
 
 export default async function EditNotePage(props: { params: { id: string } }) {
-  const params = await props.params;
+  const { id } = props.params;
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const data = await getData({ userId: user?.id as string, noteId: params.id });
+  const data = await getData({ userId: user?.id as string, noteId: id });
 
   return (
     <div className="px-4 py-6">
