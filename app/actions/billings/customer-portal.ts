@@ -22,7 +22,10 @@ export async function createCustomerPortal() {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: dbUser.stripeCustomerId,
-    return_url: "http://localhost:3000/dashboard",
+    return_url:
+      process.env.NODE_ENV === "production"
+        ? (process.env.PRODUCTION_URL as string)
+        : "http://localhost:3000/dashboard",
   });
 
   return redirect(session.url);
