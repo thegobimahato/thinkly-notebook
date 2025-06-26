@@ -17,10 +17,17 @@ import { prisma } from "@/lib/db";
 import SubmitButton from "@/components/general/SubmitButtons";
 import { updateNote } from "@/app/actions/notes/update-note";
 
+// fix type here
+interface EditNotePageProps {
+  params: {
+    id: string;
+  };
+}
+
 async function getData({ userId, noteId }: { userId: string; noteId: string }) {
   noStore();
 
-  const data = await prisma.note.findUnique({
+  return await prisma.note.findUnique({
     where: { id: noteId, userId },
     select: {
       title: true,
@@ -28,21 +35,29 @@ async function getData({ userId, noteId }: { userId: string; noteId: string }) {
       id: true,
     },
   });
-
-  return data;
 }
 
-export default async function EditNotePage(props: { params: { id: string } }) {
-  const { id } = props.params;
+export default async function EditNotePage({ params }: EditNotePageProps) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const data = await getData({ userId: user?.id as string, noteId: id });
+
+  if (!user) {
+    return (
+      <div className="text-center text-red-500">User not authenticated</div>
+    );
+  }
+
+  const data = await getData({ userId: user.id, noteId: params.id });
+
+  if (!data) {
+    return <div className="text-center text-red-500">Note not found</div>;
+  }
 
   return (
     <div className="px-4 py-6">
       <Card>
         <form action={updateNote}>
-          <input type="hidden" name="noteId" value={data?.id} />
+          <input type="hidden" name="noteId" value={data.id} />
 
           <CardHeader>
             <CardTitle className="text-2xl">Edit Note</CardTitle>
@@ -60,7 +75,7 @@ export default async function EditNotePage(props: { params: { id: string } }) {
                 type="text"
                 required
                 placeholder="Title for your note"
-                defaultValue={data?.title}
+                defaultValue={data.title}
               />
             </div>
 
@@ -72,7 +87,7 @@ export default async function EditNotePage(props: { params: { id: string } }) {
                 placeholder="Describe your note"
                 className="min-h-[150px]"
                 required
-                defaultValue={data?.description}
+                defaultValue={data.description}
               />
             </div>
           </CardContent>
