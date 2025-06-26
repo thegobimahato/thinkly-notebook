@@ -17,13 +17,6 @@ import { prisma } from "@/lib/db";
 import SubmitButton from "@/components/general/SubmitButtons";
 import { updateNote } from "@/app/actions/notes/update-note";
 
-// fix type here
-interface EditNotePageProps {
-  params: {
-    id: string;
-  };
-}
-
 async function getData({ userId, noteId }: { userId: string; noteId: string }) {
   noStore();
 
@@ -37,9 +30,15 @@ async function getData({ userId, noteId }: { userId: string; noteId: string }) {
   });
 }
 
-export default async function EditNotePage({ params }: EditNotePageProps) {
+export default async function EditNotePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
+  const { id } = await params;
 
   if (!user) {
     return (
@@ -47,7 +46,7 @@ export default async function EditNotePage({ params }: EditNotePageProps) {
     );
   }
 
-  const data = await getData({ userId: user.id, noteId: params.id });
+  const data = await getData({ userId: user.id, noteId: id });
 
   if (!data) {
     return <div className="text-center text-red-500">Note not found</div>;
