@@ -9,9 +9,25 @@ datasource db {
 }
 
 model User {
-  id               String  @id @unique
+  id               String        @id @unique
   name             String?
-  email            String  @unique
-  stripeCustomerId String? @unique
-  colorScheme      String  @default("theme-blue")
+  email            String        @unique
+  stripeCustomerId String?       @unique
+  colorScheme      String        @default("theme-blue")
+  Subscription     Subscription?
+}
+
+model Subscription {
+  stripeSubscriptionId String @id @unique
+  interval             String
+  status               String
+  planId               String
+  currentPeriodStart   Int
+  currentPeriodEnd     Int
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

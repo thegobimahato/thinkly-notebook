@@ -51,7 +51,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${data?.colorScheme ?? "theme-orange"} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${data?.colorScheme ?? "theme-blue"} antialiased`}
       >
         <ThemeProvider
           attribute="class"

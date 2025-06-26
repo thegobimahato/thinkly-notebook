@@ -1,3 +1,4 @@
+import { updateUserProfile } from "@/app/actions/user/update-profile";
 import SubmitButton from "@/components/general/SubmitButton";
 import {
   Card,
@@ -21,8 +22,7 @@ import {
 import { prisma } from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-import { revalidatePath, unstable_noStore as noStore } from "next/cache";
-import { toast } from "sonner";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getData(userId: string) {
   noStore();
@@ -45,25 +45,6 @@ export default async function SettingPage() {
   const user = await getUser();
   const data = await getData(user?.id as string);
 
-  async function postData(formData: FormData) {
-    "use server";
-
-    const name = formData.get("name") as string;
-    const colorScheme = formData.get("color") as string;
-
-    await prisma.user.update({
-      where: {
-        id: user?.id,
-      },
-      data: {
-        name: name ?? undefined,
-        colorScheme: colorScheme ?? undefined,
-      },
-    });
-
-    revalidatePath("/", "layout");
-  }
-
   return (
     <div className="grid items-start gap-8">
       <div className="flex items-center justify-between px-2">
@@ -74,7 +55,7 @@ export default async function SettingPage() {
       </div>
 
       <Card>
-        <form action={postData}>
+        <form action={updateUserProfile}>
           <CardHeader>
             <CardTitle className="text-2xl">General Data</CardTitle>
             <CardDescription className="text-md">
